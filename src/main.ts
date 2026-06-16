@@ -15,7 +15,12 @@ async function bootstrap() {
 
   // [Q4 - Robustness] Security headers, CORS, body size limit, input
   // validation/whitelisting and a global exception filter harden every endpoint.
-  app.use(helmet());
+  app.use(
+    helmet({
+      hsts: false,
+      contentSecurityPolicy: false,
+    }),
+  );
 
   const corsOrigin = config.get<string[]>('CORS_ORIGIN');
   app.enableCors({
