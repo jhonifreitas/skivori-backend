@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String    @id @default(uuid(7))
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name     String
+  email    String  @unique
+  password String
+  image    String?
+
+  status UserStatus @default(ACTIVE)
+
+  gamePlays     GamePlay[]
+  favoriteGames UserFavoriteGame[]
+}
+
+model UserFavoriteGame {
+  id        String    @id @default(uuid(7))
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id])
+
+  @@unique([userId, gameId])
+  @@index([userId, gameId])
+}
+
+model Country {
+  id        String    @id @default(uuid(7))
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name String
+  code String @unique
+
+  currency String @default("EUR")
+
+  gameCountries GameCountry[]
+}
+
+model Game {
+  id        String    @id @default(uuid(7))
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name String
+  type String @unique
+
+  gamePlays     GamePlay[]
+  gameCountries GameCountry[]
+  favoriteUsers UserFavoriteGame[]
+}
+
+model GameCountry {
+  id        String    @id @default(uuid(7))
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id])
+
+  countryId String
+  country   Country @relation(fields: [countryId], references: [id])
+
+  @@unique([gameId, countryId])
+  @@index([gameId, countryId])
+}
+
+model GamePlay {
+  id        String    @id @default(uuid(7))
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id])
+
+  result     Float              @default(0)
+  resultType GamePlayResultType @default(WIN)
+
+  @@index([userId, gameId])
+}
+
+// ENUMS
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum GamePlayResultType {
+  WIN
+  LOSE
+}
