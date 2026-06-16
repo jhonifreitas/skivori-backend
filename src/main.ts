@@ -5,7 +5,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 
-import { Environment } from './core/config/env/env.enum';
 import { NotFoundExceptionFilter } from './core/infra/prisma/filters/not-found.filter';
 
 import { AppModule } from './app.module';
@@ -28,16 +27,13 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   app.useGlobalFilters(new NotFoundExceptionFilter());
 
-  const nodeEnv = config.get<string>('NODE_ENV');
-  if (nodeEnv !== Environment.Production) {
-    const docConfig = new DocumentBuilder()
-      .setTitle('Skivori - Backend')
-      .setDescription('Skivori - Backend API')
-      .setVersion('1.0')
-      .build();
-    const document = SwaggerModule.createDocument(app, docConfig);
-    SwaggerModule.setup('docs', app, document);
-  }
+  const docConfig = new DocumentBuilder()
+    .setTitle('Skivori - Backend')
+    .setDescription('Skivori - Backend API')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, docConfig);
+  SwaggerModule.setup('docs', app, document);
 
   const host = config.get<string>('HOST') ?? 'localhost';
   const port = config.get<number>('PORT') ?? 3333;
