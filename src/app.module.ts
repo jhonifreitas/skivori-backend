@@ -9,7 +9,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { validate } from './core/config/env/env.validation';
 import { AuthGuard } from './core/guards/auth.guard';
 import { PrismaModule } from './core/infra/prisma/prisma.module';
-import { createRedisConfig } from './core/infra/redis/redis.config';
+import { createRedisUriConfig } from './core/infra/redis/redis.config';
 
 import { GameModule } from './modules/game/game.module';
 
@@ -32,7 +32,7 @@ import { GameModule } from './modules/game/game.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         ttl: config.get<number>('CACHE_TTL') ?? 500,
-        stores: [new KeyvRedis(createRedisConfig(config))],
+        stores: [new KeyvRedis(createRedisUriConfig(config))],
       }),
     }),
     HttpModule.register({

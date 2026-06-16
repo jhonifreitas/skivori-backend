@@ -9,6 +9,8 @@ services:
     depends_on:
       - postgres
       - redis
+    networks:
+      - skivori-backend
 
   postgres:
     image: postgres:alpine
@@ -18,11 +20,18 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - pg-data:/var/lib/postgresql
+    networks:
+      - skivori-backend
 
   redis:
     image: redis:alpine
     volumes:
       - redis-data:/data
+    networks:
+      - skivori-backend
+
+networks:
+  skivori-backend:
 
 volumes:
   pg-data:
