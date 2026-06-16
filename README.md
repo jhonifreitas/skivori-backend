@@ -63,7 +63,10 @@ yarn build && yarn start:prod
 
 The server runs on `http://localhost:3333` by default (configurable via `HOST` / `PORT`).
 
-API documentation (non-production only) is available at `http://localhost:3333/docs`.
+### API documentation
+
+- **Deployed:** [http://35.159.189.10:3333/docs](http://35.159.189.10:3333/docs)
+- **Local:** `http://localhost:3333/docs`
 
 ## Environment variables
 
