@@ -137,3 +137,26 @@ yarn test          # unit tests
 yarn test:e2e      # e2e tests
 yarn test:cov      # coverage
 ```
+
+## AI-assisted development
+
+This project was built with [Cursor](https://cursor.com/) as the AI code editor/assistant. Beyond the chat modes below, **Tab autocomplete** was used throughout daily coding to speed up boilerplate, complete method bodies, and suggest imports. The workflow followed a consistent loop across three modes:
+
+| Mode | Purpose |
+| --- | --- |
+| **Plan** | Break down requirements, compare approaches, and define what to implement before writing code |
+| **Ask** | Clarify doubts about the codebase, challenge requirements, and review gaps without making changes |
+| **Agent** | Execute planned tasks: implement features, apply fixes, and update configuration |
+
+### Where AI was used
+
+- **Autocomplete (Tab)** — inline code completion while writing services, DTOs, tests, and configuration files
+- **Comments** — generating and refining inline comments (e.g. `[Q4 - Robustness]` / `[Q5 - Performance]` markers in controllers and bootstrap code)
+- **Planning** — mapping each challenge question (Q1–Q7) to endpoints, middleware, and schema decisions before implementation
+- **Q&A** — validating implementation against `docs/instructions.md`, reviewing missing items, and discussing trade-offs (e.g. idempotency, cache strategy, spin reward rules)
+- **Implementation** — scaffolding modules, DTOs, guards, interceptors, Prisma schema, Docker setup, and incremental fixes
+- **Tests** — generating and adjusting unit specs (`*.spec.ts`) and e2e coverage for game endpoints
+- **Bug fixes** — diagnosing and correcting issues found during development (e.g. spin left-to-right logic, Redis connection in Docker, idempotency lock on failure, production entry path)
+- **Commits** — drafting conventional commit messages and splitting the history into logical, atomic commits as the project evolved
+
+All AI-generated code was reviewed and validated manually before being committed.
